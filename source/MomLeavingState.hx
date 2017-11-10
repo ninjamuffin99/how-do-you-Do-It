@@ -74,7 +74,7 @@ class MomLeavingState extends TimedState
 		add(girl1_sprite);
 		
 		girl2_sprite = new FlxSprite(293, 82);
-		girl2_sprite.loadGraphic(AssetPaths.girl2__png, true, 44, 121);
+		girl2_sprite.loadGraphic(AssetPaths.girl2__png, true, Std.int(216 / 4), 99);
 		girl2_sprite.animation.add("run", [0, 1, 2, 3], 10, false);
 		girl2_sprite.alpha = 0;
 		add(girl2_sprite);
