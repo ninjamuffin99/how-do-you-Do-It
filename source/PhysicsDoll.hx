@@ -340,4 +340,9 @@ class PhysicsDoll
 			
 		}
 	}
+	
+	public function new()
+	{
+		
+	}
 }

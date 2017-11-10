@@ -87,7 +87,7 @@ class Arm
 		var x:Float = b.x - a.x;
 		
 		var theta:Float = Math.atan2(y, x);
-		var deg:Float = theta ** 180 / Math.PI;
+		var deg:Float = theta * 180 / Math.PI;
 		forearm.angle = deg + 90;
 		
 		hand.x = this.heldDoll.pos.x * m_physScale / 2 - hand.width / 2;
