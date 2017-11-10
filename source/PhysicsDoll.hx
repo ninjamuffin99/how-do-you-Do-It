@@ -1,6 +1,7 @@
 package;
 import box2D.collision.shapes.B2CircleShape;
 import box2D.collision.shapes.B2PolygonShape;
+import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2Body;
 import box2D.dynamics.B2BodyDef;
 import box2D.dynamics.B2FilterData;
@@ -74,20 +75,20 @@ class PhysicsDoll
 		var box:B2PolygonShape;
 		var bd:B2BodyDef = new B2BodyDef();
 		var jd:B2RevoluteJointDef = new B2RevoluteJointDef();
-		var fixureDef:B2FixtureDef = new B2FixtureDef();
+		var fixtureDef:B2FixtureDef = new B2FixtureDef();
 		var startX:Float = start.x;
 		var startY:Float = start.y;
 		
 		// BODIES
-		// Set these to dynamic bodies
+		// set these to dynamic bodies
 		bd.type = B2Body.b2_dynamicBody;
 		
 		// Head
 		circ = new B2CircleShape(20 / m_physScale);
-		fixureDef.shape = circ;
-		fixureDef.density = 1;
-		fixureDef.friction = 0.4;
-		fixureDef.restitution = 0.3;
+		fixtureDef.shape = circ;
+		fixtureDef.density = 1;
+		fixtureDef.friction = 0.4;
+		fixtureDef.restitution = 0.3;
 		var headY:Float = 10;
 		
 		if (spriteType == BTYPE)
@@ -97,45 +98,45 @@ class PhysicsDoll
 		
 		bd.position.set(startX / m_physScale, (startY = headY) / m_physScale);
 		head = m_world.createBody(bd);
-		fixureDef.isSensor = true;
-		fixureDef.userData = COL_HEAD;
-		head.createFixture(fixureDef);
-		fixureDef.isSensor = false;
+		fixtureDef.isSensor = true;
+		fixtureDef.userData = COL_HEAD;
+		head.createFixture(fixtureDef);
+		fixtureDef.isSensor = false;
 		
 		// Torsso1
 		box = new B2PolygonShape();
 		box.setAsBox(30 / m_physScale, 30 / m_physScale);
-		fixureDef.shape = box;
-		fixureDef.density = 1.0;
-		fixureDef.friction = 0.4;
-		fixureDef.restitution = 0.1;
+		fixtureDef.shape = box;
+		fixtureDef.density = 1.0;
+		fixtureDef.friction = 0.4;
+		fixtureDef.restitution = 0.1;
 		var filterData:B2FilterData = new B2FilterData();
 		filterData.maskBits = TORSOMASK;
 		filterData.categoryBits = TORSOCAT;
-		fixureDef.filter = filterData;
+		fixtureDef.filter = filterData;
 		bd.position.set(startX / m_physScale, (startY + 28) / m_physScale);
 		torso1 = m_world.createBody(bd);
-		torso1.createFixture(fixureDef);
+		torso1.createFixture(fixtureDef);
 		
 		// Torso2
 		box = new B2PolygonShape();
         box.setAsBox(22 / m_physScale, 22 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set(startX / m_physScale, (startY + 85) / m_physScale);
+        bd.position.set(startX / m_physScale, (startY + 85) / m_physScale);
         bd.fixedRotation = true;
-        var torso2 : B2Body = m_world.CreateBody(bd);
-        torso2.CreateFixture(fixtureDef);
+        var torso2 : B2Body = m_world.createBody(bd);
+        torso2.createFixture(fixtureDef);
         bd.fixedRotation = false;
         midriff = torso2;
         // Torso3
         box = new B2PolygonShape();
         box.setAsBox(15 / m_physScale, 10 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set(startX / m_physScale, (startY + 115) / m_physScale);
-        torso3 = m_world.CreateBody(bd);
+        bd.position.set(startX / m_physScale, (startY + 115) / m_physScale);
+        torso3 = m_world.createBody(bd);
         fixtureDef.isSensor = true;
         fixtureDef.userData = COL_GROIN;
-        torso3.CreateFixture(fixtureDef);
+        torso3.createFixture(fixtureDef);
         fixtureDef.isSensor = false;
         bd.fixedRotation = false;
         
@@ -158,36 +159,36 @@ class PhysicsDoll
             armSpace = 70;
             armHeight = 15;
         }
-        bd.position.Set((startX - armSpace) / m_physScale, (startY + armHeight) / m_physScale);
-        upperArmL = m_world.CreateBody(bd);
-        upperArmL.CreateFixture(fixtureDef);
+        bd.position.set((startX - armSpace) / m_physScale, (startY + armHeight) / m_physScale);
+        upperArmL = m_world.createBody(bd);
+		upperArmL.createFixture(fixtureDef);
         // L Hand
         box = new B2PolygonShape();
         box.setAsBox(10 / m_physScale, 10 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX - 150) / m_physScale, (startY + armHeight) / m_physScale);
-        l_hand = m_world.CreateBody(bd);
+        bd.position.set((startX - 150) / m_physScale, (startY + armHeight) / m_physScale);
+        l_hand = m_world.createBody(bd);
         fixtureDef.isSensor = true;
         fixtureDef.userData = COL_L_HAND;
-        l_hand.CreateFixture(fixtureDef);
+        l_hand.createFixture(fixtureDef);
         fixtureDef.isSensor = false;
         bd.fixedRotation = false;
         // R
         box = new B2PolygonShape();
         box.setAsBox(56 / m_physScale, 6.5 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX + armSpace) / m_physScale, (startY + armHeight) / m_physScale);
-        upperArmR = m_world.CreateBody(bd);
-        upperArmR.CreateFixture(fixtureDef);
+        bd.position.set((startX + armSpace) / m_physScale, (startY + armHeight) / m_physScale);
+        upperArmR = m_world.createBody(bd);
+        upperArmR.createFixture(fixtureDef);
         // R Hand
         box = new B2PolygonShape();
         box.setAsBox(10 / m_physScale, 10 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX + 150) / m_physScale, (startY + armHeight) / m_physScale);
-        r_hand = m_world.CreateBody(bd);
+        bd.position.set((startX + 150) / m_physScale, (startY + armHeight) / m_physScale);
+        r_hand = m_world.createBody(bd);
         fixtureDef.isSensor = true;
         fixtureDef.userData = COL_R_HAND;
-        r_hand.CreateFixture(fixtureDef);
+        r_hand.createFixture(fixtureDef);
         fixtureDef.isSensor = false;
         bd.fixedRotation = false;
         
@@ -208,16 +209,16 @@ class PhysicsDoll
         box = new B2PolygonShape();
         box.setAsBox(7.5 / m_physScale, 66 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX - LEGSPACING) / m_physScale, (startY + 170) / m_physScale);
-        upperLegL = m_world.CreateBody(bd);
-        upperLegL.CreateFixture(fixtureDef);
+        bd.position.set((startX - LEGSPACING) / m_physScale, (startY + 170) / m_physScale);
+        upperLegL = m_world.createBody(bd);
+        upperLegL.createFixture(fixtureDef);
         // R
         box = new B2PolygonShape();
         box.setAsBox(7.5 / m_physScale, 66 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX + LEGSPACING) / m_physScale, (startY + 170) / m_physScale);
-        upperLegR = m_world.CreateBody(bd);
-        upperLegR.CreateFixture(fixtureDef);
+        bd.position.set((startX + LEGSPACING) / m_physScale, (startY + 170) / m_physScale);
+        upperLegR = m_world.createBody(bd);
+        upperLegR.createFixture(fixtureDef);
         
         // LowerLeg
         fixtureDef.density = 1.0;
@@ -231,16 +232,16 @@ class PhysicsDoll
         box = new B2PolygonShape();
         box.setAsBox(6 / m_physScale, 10 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX - LEGSPACING) / m_physScale, (startY + 247) / m_physScale);
-        lowerLegL = m_world.CreateBody(bd);
-        lowerLegL.CreateFixture(fixtureDef);
+        bd.position.set((startX - LEGSPACING) / m_physScale, (startY + 247) / m_physScale);
+        lowerLegL = m_world.createBody(bd);
+        lowerLegL.createFixture(fixtureDef);
         // R
         box = new B2PolygonShape();
         box.setAsBox(6 / m_physScale, 10 / m_physScale);
         fixtureDef.shape = box;
-        bd.position.Set((startX + LEGSPACING) / m_physScale, (startY + 247) / m_physScale);
-        lowerLegR = m_world.CreateBody(bd);
-        lowerLegR.CreateFixture(fixtureDef);
+        bd.position.set((startX + LEGSPACING) / m_physScale, (startY + 247) / m_physScale);
+        lowerLegR = m_world.createBody(bd);
+        lowerLegR.createFixture(fixtureDef);
         
         
         // JOINTS
@@ -249,8 +250,8 @@ class PhysicsDoll
         // Head to shoulders
         jd.lowerAngle = -10 / (180 / Math.PI);
         jd.upperAngle = 10 / (180 / Math.PI);
-        jd.Initialize(torso1, head, new B2Vec2(startX / m_physScale, (startY - 3) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso1, head, new B2Vec2(startX / m_physScale, (startY - 3) / m_physScale));
+        m_world.createJoint(jd);
         
         // Upper arm to shoulders
         // L
@@ -261,59 +262,59 @@ class PhysicsDoll
         }
         jd.lowerAngle = -85 / (180 / Math.PI);
         jd.upperAngle = 10 / (180 / Math.PI);
-        jd.Initialize(torso1, upperArmL, new B2Vec2((startX - shoulderJointSpace) / m_physScale, (startY + 10) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso1, upperArmL, new B2Vec2((startX - shoulderJointSpace) / m_physScale, (startY + 10) / m_physScale));
+        m_world.createJoint(jd);
         // L Hand to L Arm
         jd.lowerAngle = -125 / (180 / Math.PI);
         jd.upperAngle = 125 / (180 / Math.PI);
-        jd.Initialize(upperArmL, l_hand, new B2Vec2((startX - 150) / m_physScale, (startY + armHeight) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(upperArmL, l_hand, new B2Vec2((startX - 150) / m_physScale, (startY + armHeight) / m_physScale));
+        m_world.createJoint(jd);
         // R
         jd.lowerAngle = -10 / (180 / Math.PI);
         jd.upperAngle = 85 / (180 / Math.PI);
-        jd.Initialize(torso1, upperArmR, new B2Vec2((startX + shoulderJointSpace) / m_physScale, (startY + 10) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso1, upperArmR, new B2Vec2((startX + shoulderJointSpace) / m_physScale, (startY + 10) / m_physScale));
+        m_world.createJoint(jd);
         // R Hand to R Arm
         jd.lowerAngle = -125 / (180 / Math.PI);
         jd.upperAngle = 125 / (180 / Math.PI);
-        jd.Initialize(upperArmR, r_hand, new B2Vec2((startX + 150) / m_physScale, (startY + armHeight) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(upperArmR, r_hand, new B2Vec2((startX + 150) / m_physScale, (startY + armHeight) / m_physScale));
+        m_world.createJoint(jd);
         
         // Shoulders/stomach
         jd.lowerAngle = -15 / (180 / Math.PI);
         jd.upperAngle = 15 / (180 / Math.PI);
-        jd.Initialize(torso1, torso2, new B2Vec2(startX / m_physScale, (startY + 65) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso1, torso2, new B2Vec2(startX / m_physScale, (startY + 65) / m_physScale));
+        m_world.createJoint(jd);
         
         // stomach to hitbox
         jd.lowerAngle = -15 / (180 / Math.PI);
         jd.upperAngle = 15 / (180 / Math.PI);
-        jd.Initialize(torso2, torso3, new B2Vec2(startX / m_physScale, (startY + 65) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso2, torso3, new B2Vec2(startX / m_physScale, (startY + 65) / m_physScale));
+        m_world.createJoint(jd);
         
         // Torso to upper leg
         // L
         jd.lowerAngle = -5 / (180 / Math.PI);
         jd.upperAngle = 45 / (180 / Math.PI);
-        jd.Initialize(torso2, upperLegL, new B2Vec2((startX - LEGSPACING) / m_physScale, (startY + 96) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso2, upperLegL, new B2Vec2((startX - LEGSPACING) / m_physScale, (startY + 96) / m_physScale));
+        m_world.createJoint(jd);
         // R
         jd.lowerAngle = -45 / (180 / Math.PI);
         jd.upperAngle = 5 / (180 / Math.PI);
-        jd.Initialize(torso2, upperLegR, new B2Vec2((startX + LEGSPACING) / m_physScale, (startY + 96) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(torso2, upperLegR, new B2Vec2((startX + LEGSPACING) / m_physScale, (startY + 96) / m_physScale));
+        m_world.createJoint(jd);
         
         // Upper leg to lower leg
         // L
         jd.lowerAngle = 10 / (180 / Math.PI);
         jd.upperAngle = 40 / (180 / Math.PI);
-        jd.Initialize(upperLegL, lowerLegL, new B2Vec2((startX - LEGSPACING) / m_physScale, (startY + 235) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(upperLegL, lowerLegL, new B2Vec2((startX - LEGSPACING) / m_physScale, (startY + 235) / m_physScale));
+        m_world.createJoint(jd);
         // R
         jd.lowerAngle = -40 / (180 / Math.PI);
         jd.upperAngle = 10 / (180 / Math.PI);
-        jd.Initialize(upperLegR, lowerLegR, new B2Vec2((startX + LEGSPACING) / m_physScale, (startY + 235) / m_physScale));
-        m_world.CreateJoint(jd);
+        jd.initialize(upperLegR, lowerLegR, new B2Vec2((startX + LEGSPACING) / m_physScale, (startY + 235) / m_physScale));
+        m_world.createJoint(jd);
         
         setupSprites();
 	}
