@@ -8,6 +8,8 @@
 --macro keep('IntIterator')
 -cp C:/HaxeToolkit/haxe/lib/hscript/2,1,1
 -D hscript=2.1.1
+-cp C:/HaxeToolkit/haxe/lib/box2d/1,2,3
+-D box2d=1.2.3
 -cp source
 -cp C:\HaxeToolkit\haxe\lib\openfl/3,6,1/extern
 -D native-trace

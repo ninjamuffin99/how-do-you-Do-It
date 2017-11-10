@@ -1,5 +1,10 @@
 package;
 
+import box2D.collision.shapes.B2PolygonShape;
+import box2D.common.math.B2Vec2;
+import box2D.dynamics.B2Body;
+import box2D.dynamics.B2BodyDef;
+import box2D.dynamics.B2DebugDraw;
 import box2D.dynamics.B2World;
 import box2D.dynamics.joints.B2MouseJoint;
 import flixel.FlxG;
@@ -8,6 +13,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import openfl.display.Sprite;
 
 class PlayState extends TimedState
 {
@@ -26,28 +32,76 @@ class PlayState extends TimedState
     public static var mouseXWorld : Float;
     public static var mouseYWorld : Float;
     
-    public var thinking : ScrollingText;
-    public var thinking_two : ScrollingText;
-    public var thinking_counter : Float = 0;
-    public var bubble_width : Float = FlxG.width / 2;
-    public var face : Face;
-    public var body : FlxSprite;
-    public var lArm : Arm;
-    public var rArm : Arm;
+    public var thinking:ScrollingText;
+    public var thinking_two:ScrollingText;
+    public var thinking_counter:Float = 0;
+    public var bubble_width:Float = FlxG.width / 2;
+    public var face:Face;
+    public var body:FlxSprite;
+    public var lArm:Arm;
+    public var rArm:Arm;
     
-    public var debugText : FlxText;
-    public var started : Bool;
-    public var smoke : FlxSprite;
-    public var howText1 : FlxText;
-    public var howText2 : FlxText;
+    public var debugText:FlxText;
+    public var started:Bool;
+    public var smoke:FlxSprite;
+    public var howText1:FlxText;
+    public var howText2:FlxText;
 	
 	override public function create():Void
 	{
+		started = false;
+		
+		var bg:FlxSprite = new FlxSprite();
+		bg.loadGraphic(AssetPaths.mainbg__png, false, 320, 240);
+		add(bg);
+		
+		setupWorld();
+		
 		super.create();
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+	}
+	
+	private function setupWorld():Void
+	{
+		var gravity:B2Vec2 = new B2Vec2(0, 9.8);
+		m_world = new B2World(gravity, true);
+		var dbgDraw:B2DebugDraw = new B2DebugDraw();
+		var dbgSprite:Sprite = new Sprite();
+		FlxG.stage.addChild(dbgSprite);
+		dbgDraw.setSprite(dbgSprite);
+		dbgDraw.setDrawScale(30);
+		dbgDraw.setFillAlpha(0.3);
+		dbgDraw.setLineThickness(1);
+		dbgDraw.setFlags(B2DebugDraw.e_shapeBit | B2DebugDraw.e_jointBit);
+		m_world.setDebugDraw(dbgDraw);
+		
+		// Create border of boxes
+		var wall:B2PolygonShape = B2PolygonShape();
+		var wallBd:B2BodyDef = new B2BodyDef();
+		var wallB:B2Body;
+		
+		// Left
+		wallBd.position.set( -95 / m_physScale, 480 / m_physScale / 2);
+		wall.setAsBox(100 / m_physScale, 480 / m_physScale / 2);
+		// commented out code in OG
+		//wallB = m_world.CreateBody(wallBd);
+        //wallB.CreateFixture2(wall);
+		//Right
+		wallBd.position.set((640 + 95) / m_physScale, 480 / m_physScale / 2);
+		//more commented out code?? what a mystery :O
+		//wallB = m_world.CreateBody(wallBd);
+        //wallB.CreateFixture2(wall);
+        // Top
+		wallBd.position.set(640 / m_physScale / 2, -95 / m_physScale);
+		wall.setAsBox(680 / m_physScale / 2, 100 / m_physScale);
+		// *emoji that is thinking that Tyler Glaiel uses a lot*
+		//wallB = m_world.CreateBody(wallBd);
+        //wallB.CreateFixture2(wall);
+        // Bottom
+		wallBd.position.set(640 / m_physScale / 2, (480 + 95) / m_physScale);
 	}
 }
