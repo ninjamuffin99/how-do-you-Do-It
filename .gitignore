@@ -6,6 +6,3 @@ nohup.out
 .*.un~
 .DS_Store
 *.swf
-*.app
-*.pfx
-*.tmp
