@@ -1,5 +1,6 @@
 package;
 
+import box2D.collision.B2AABB;
 import box2D.collision.shapes.B2PolygonShape;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2Body;
@@ -10,6 +11,7 @@ import box2D.dynamics.joints.B2MouseJoint;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
@@ -57,6 +59,72 @@ class PlayState extends TimedState
 		
 		setupWorld();
 		
+		body = new FlxSprite(-70, 56);
+        body.loadGraphic(AssetPaths.girl_body__png, false, 294, 190, true);
+        add(body);
+        
+        face = new Face(-10, -68);
+        
+        thinking = new ScrollingText();
+        add(thinking);
+        
+        var startY : Float = 200;
+        var startX : Float = 170;
+        
+        var worldAABB:B2AABB = new B2AABB();
+        worldAABB.lowerBound.set(0, 220 / m_physScale);
+        worldAABB.upperBound.set(640 / m_physScale, 480 / m_physScale);
+        
+        dollRGrabber = new DollGrabber();
+        dollLGrabber = new DollGrabber();
+        
+        lArm = new Arm(50, dollLGrabber, false);
+        rArm = new Arm(220, dollRGrabber, true);
+        
+        var position : FlxPoint = new FlxPoint(startX, startY);
+        dollL = new PhysicsDoll();
+        dollL.create(m_world, position, PhysicsDoll.ATYPE);
+        dollLGrabber.create(dollL, m_world, worldAABB);
+        
+        //setup collision listener
+        dollCollision = new DollContactListener(face);
+        m_world.setContactListener(dollCollision);
+        
+        startX = 510;
+        position = new FlxPoint(startX, startY);
+        dollR = new PhysicsDoll();
+        dollR.create(m_world, position, PhysicsDoll.BTYPE);
+        dollRGrabber.create(dollR, m_world, worldAABB);
+        
+        dollController = new DollController(dollRGrabber, dollLGrabber, rArm, lArm);
+        
+        smoke = new FlxSprite(0, 0);
+        smoke.makeGraphic(640, 480);
+        smoke.fill(0x55000000);
+        add(smoke);
+        
+        howText1 = new FlxText(FlxG.width - 200, FlxG.height / 2, FlxG.width, "Use WASD to move your arms.");
+        howText1.setFormat("Minecraftia-Regular", 8, 0xffffffff, "left");
+        //howText1.size = 14;
+        howText2 = new FlxText(FlxG.width - 200, FlxG.height / 2 + 20, FlxG.width, "Use J or K to rotate a doll.");
+        howText2.setFormat("Minecraftia-Regular", 8, 0xffffffff, "left");
+        //howText2.size = 14;
+        add(howText1);
+        add(howText2);
+        
+        if (FlxG.music == null)
+        {
+            FlxG.playMusic(SndBGM, ggj.VOLUME);
+        }
+        else
+        {
+            FlxG.music.resume();
+            if (!FlxG.music.active)
+            {
+                FlxG.playMusic(SndBGM, ggj.VOLUME);
+            }
+        }
+		
 		super.create();
 	}
 
@@ -80,7 +148,7 @@ class PlayState extends TimedState
 		m_world.setDebugDraw(dbgDraw);
 		
 		// Create border of boxes
-		var wall:B2PolygonShape = B2PolygonShape();
+		var wall:B2PolygonShape = new B2PolygonShape();
 		var wallBd:B2BodyDef = new B2BodyDef();
 		var wallB:B2Body;
 		
