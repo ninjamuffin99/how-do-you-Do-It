@@ -106,7 +106,16 @@ class MomLeavingState extends TimedState
 	{
 		super.update(elapsed);
 		
-		if ((time
+		if ((timeFrame / 100) % 3 == 0)
+		{
+			current_scene++;
+			if (current_scene == 2)
+			{
+				FlxG.sound.play(AssetPaths.doorclose__mp3);
+				cam_moving = true;
+				cam_target_point.set(176 + (FlxG.width / 2), FlxG.height / 2);
+			}
+		}
 		
 	}
 	
