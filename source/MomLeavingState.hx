@@ -72,6 +72,7 @@ class MomLeavingState extends TimedState
 		girl1_sprite = new FlxSprite(110, 98);
 		girl1_sprite.loadGraphic(AssetPaths.girl1__png, false, 44, 121);
 		add(girl1_sprite);
+		
 		girl2_sprite = new FlxSprite(293, 82);
 		girl2_sprite.loadGraphic(AssetPaths.girl2__png, true, 44, 121);
 		girl2_sprite.animation.add("run", [0, 1, 2, 3], 10, false);
@@ -115,8 +116,60 @@ class MomLeavingState extends TimedState
 				cam_moving = true;
 				cam_target_point.set(176 + (FlxG.width / 2), FlxG.height / 2);
 			}
+			if (current_scene == 3)
+			{
+				cam_moving  = true;
+				cam_target_point.set(389 + (FlxG.width / 2), 52 + FlxG.height / 2);
+			}
 		}
 		
+		if (Math.abs(cameraTrack.x - cam_target_point.x) < 10 && Math.abs(cameraTrack.y - cam_target_point.y) < 10)
+		{
+			cam_moving = false;
+			if (current_scene == 2)
+			{
+				car_sprite.alpha += 0.02;
+				girl2_sprite.alpha += 0.02;
+				if (!girlAnimLock && girl2_sprite.alpha >= 1)
+				{
+					girl2_sprite.animation.play("run");
+					FlxG.sound.play(AssetPaths.carleave__mp3);
+					girlAnimLock = true;
+				}
+				if (!sceneLock)
+				{
+					sceneLock = true;
+					FlxG.sound.play(AssetPaths.cardoor__mp3);
+				}
+			}
+			if (current_scene == 3)
+			{
+				dolls_sprite.alpha += 0.02;
+				girl3_sprite.alpha += 0.02;
+			}
+		}
+		else
+		{
+			cameraTrack.velocity.x = cam_target_point.x - cameraTrack.x;
+			cameraTrack.velocity.y = cam_target_point.y - cameraTrack.y;
+		}
+		
+		if (current_scene == 2)
+		{
+			girl1_sprite.alpha -= 0.02;
+			mom_sprite.alpha -= 0.02;
+		}
+		if (current_scene == 3)
+		{
+			girl2_sprite.alpha -= 0.02;
+			car_sprite.alpha -= 0.02;
+		}
+		
+	}
+	
+	override public function endCallback():Void 
+	{
+		FlxG.switchState(nextState);
 	}
 	
 }
