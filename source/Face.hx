@@ -37,7 +37,7 @@ class Face extends FlxSprite
 	{
 		super.update(elapsed);
 		
-		var pick:Float = FlxG.random.float(0, 400);
+		var pick:Float = FlxG.random.int(0, 1) * 400;
 		if (pick < 1)
 		{
 			animation.play("lookaside");
@@ -49,6 +49,15 @@ class Face extends FlxSprite
 		decreaseBlush();
 		
 	}
+	
+	public function increaseBlush() : Void
+    {
+        if (blush.alpha < 1)
+        {
+            blush.alpha += .2;
+        }
+    }
+	
 	public function decreaseBlush():Void
 	{
 		if (blush.alpha > 0)
