@@ -62,7 +62,7 @@ class MenuState extends FlxState
         
         if (FlxG.keys.justPressed.ANY)
         {
-            //FlxG.switchState(new MomLeavingState(new PlayState()));
+            FlxG.switchState(new MomLeavingState(new PlayState()));
         }
 	}
 }
