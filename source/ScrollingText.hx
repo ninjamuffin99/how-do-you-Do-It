@@ -11,7 +11,7 @@ import flixel.text.FlxText;
 class ScrollingText extends FlxText 
 {
 
-	public var thoughts : Array<Dynamic> = new Array<Dynamic>(
+	public var thoughts:Array<Dynamic> = [
         "...she's gone.", 
         "Rose... Jack...", 
         "Why was it so cloudy in there?", 
@@ -34,7 +34,7 @@ class ScrollingText extends FlxText
         "Why doesn't she like it?", 
         "I hope she doesn't see this...", 
         "Why doesn't she like... sex?", 
-        "I wish I knew what sex was.");
+        "I wish I knew what sex was."];
     public var thought_bubble : String = "";
     public var bubble_width : Float = FlxG.width / 2;
     public var pos_x : Float = FlxG.width - 105;
@@ -50,17 +50,17 @@ class ScrollingText extends FlxText
         super(pos_x, pos_y, 90, Reflect.field(thoughts, Std.string(counter)));
         // this.setFormat("Minecraftia-Regular", 8, 0xff000000, "left");
         thought_img = new FlxSprite(178, 3);
-        thought_img.loadGraphic(AssetPaths.thoughts__png, true, 420 / 3, 114);
-        thought_img.addAnimation("mid", [1], 12, false);
-        thought_img.addAnimation("small", [2], 12, false);
+        thought_img.loadGraphic(AssetPaths.thoughts__png, true, Std.int(420 / 3), 114);
+        thought_img.animation.add("mid", [1], 12, false);
+        thought_img.animation.add("small", [2], 12, false);
         FlxG.state.add(thought_img);
-        thought_img.play("mid");
+        thought_img.animation.play("mid");
         this.color = 0xFFAAAAAA;
     }
     
-    override public function update():Void
+    override public function update(elapsed:Float):Void
     {
-        super.update();
+        super.update(elapsed);
         frame_counter++;
         c1++;
         
