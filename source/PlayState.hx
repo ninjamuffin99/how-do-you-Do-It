@@ -166,7 +166,7 @@ class PlayState extends TimedState
         lArm.update();
         rArm.update();
         
-        face.update();
+        face.update(elapsed);
         
         /*if(thinking.pos_x > bubble_width){
         thinking_counter
