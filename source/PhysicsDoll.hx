@@ -8,6 +8,7 @@ import box2D.dynamics.B2FilterData;
 import box2D.dynamics.B2FixtureDef;
 import box2D.dynamics.B2World;
 import box2D.dynamics.joints.B2RevoluteJointDef;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 
@@ -320,7 +321,48 @@ class PhysicsDoll
 	}
 	public function update():Void
 	{
-		
+		headSprite.x = (head.getPosition().x * m_physScale / 2) - headSprite.width / 2;
+        headSprite.y = (head.getPosition().y * m_physScale / 2) - headSprite.height / 2;
+        headSprite.angle = head.getAngle() * (180 / Math.PI);
+        
+        chestSprite.x = (torso1.getPosition().x * m_physScale / 2) - chestSprite.width / 2;
+        chestSprite.y = (torso1.getPosition().y * m_physScale / 2) - chestSprite.height / 2;
+        chestSprite.angle = torso1.getAngle() * (180 / Math.PI);
+        
+        hipsSprite.x = (midriff.getPosition().x * m_physScale / 2) - hipsSprite.width / 2;
+        hipsSprite.y = (midriff.getPosition().y * m_physScale / 2) - hipsSprite.height / 2;
+        hipsSprite.angle = midriff.getAngle() * (180 / Math.PI);
+        
+        armLSprite.x = (upperArmR.getPosition().x * m_physScale / 2) - armLSprite.width / 2;
+        if (spriteType == ATYPE)
+        {
+            armLSprite.y = (upperArmR.getPosition().y * m_physScale / 2) - armLSprite.height / 2 - 3;
+        }
+        else if (spriteType == BTYPE)
+        {
+            armLSprite.y = (upperArmR.getPosition().y * m_physScale / 2) - armLSprite.height / 2;
+        }
+        armLSprite.angle = upperArmR.getAngle() * (180 / Math.PI);
+        
+        armRSprite.x = (upperArmL.getPosition().x * m_physScale / 2) - armRSprite.width / 2;
+        armRSprite.y = (upperArmL.getPosition().y * m_physScale / 2) - armRSprite.height / 2;
+        armRSprite.angle = upperArmL.getAngle() * (180 / Math.PI);
+        
+        legRSprite.x = (upperLegL.getPosition().x * m_physScale / 2) - legRSprite.width / 2;
+        legRSprite.y = (upperLegL.getPosition().y * m_physScale / 2) - legRSprite.height / 2;
+        legRSprite.angle = upperLegL.getAngle() * (180 / Math.PI);
+        
+        legLSprite.x = (upperLegR.getPosition().x * m_physScale / 2) - legLSprite.width / 2;
+        legLSprite.y = (upperLegR.getPosition().y * m_physScale / 2) - legLSprite.height / 2;
+        legLSprite.angle = upperLegR.getAngle() * (180 / Math.PI);
+        
+        footLSprite.x = (lowerLegR.getPosition().x * m_physScale / 2) - footLSprite.width / 2;
+        footLSprite.y = (lowerLegR.getPosition().y * m_physScale / 2) - footLSprite.height / 2;
+        footLSprite.angle = lowerLegR.getAngle() * (180 / Math.PI);
+        
+        footRSprite.x = (lowerLegL.getPosition().x * m_physScale / 2) - footRSprite.width / 2;
+        footRSprite.y = (lowerLegL.getPosition().y * m_physScale / 2) - footRSprite.height / 2;
+        footRSprite.angle = lowerLegL.getAngle() * (180 / Math.PI);
 	}
 	
 	public function setupSprites():Void
@@ -337,8 +379,37 @@ class PhysicsDoll
 		
 		if (spriteType == ATYPE)
 		{
-			
+			headSprite.loadGraphic(AssetPaths.barb_head__png, false, 35, 40);
+            chestSprite.loadGraphic(AssetPaths.barb_chest__png, false, 29, 40);
+            hipsSprite.loadGraphic(AssetPaths.barb_hips__png, false, 28, 24);
+            armLSprite.loadGraphic(AssetPaths.barb_armL__png, false, 55, 44);
+            armRSprite.loadGraphic(AssetPaths.barb_armR__png, false, 55, 44);
+            legLSprite.loadGraphic(AssetPaths.barb_legL__png, false, 19, 84);
+            legRSprite.loadGraphic(AssetPaths.barb_legR__png, false, 19, 84);
+            footLSprite.loadGraphic(AssetPaths.barb_footL__png, false, 9, 17);
+            footRSprite.loadGraphic(AssetPaths.barb_footR__png, false, 9, 17);
 		}
+		else if (spriteType == BTYPE)
+        {
+            headSprite.loadGraphic(AssetPaths.ken_head__png, false, 28, 30);
+            chestSprite.loadGraphic(AssetPaths.ken_chest__png, false, 47, 47);
+            hipsSprite.loadGraphic(AssetPaths.ken_hips__png, false, 32, 32);
+            armLSprite.loadGraphic(AssetPaths.ken_armL__png, false, 66, 14);
+            armRSprite.loadGraphic(AssetPaths.ken_armR__png, false, 66, 14);
+            legLSprite.loadGraphic(AssetPaths.ken_legL__png, false, 19, 82);
+            legRSprite.loadGraphic(AssetPaths.ken_legR__png, false, 19, 82);
+            footLSprite.loadGraphic(AssetPaths.ken_footL__png, false, 23, 14);
+            footRSprite.loadGraphic(AssetPaths.ken_footR__png, false, 23, 14);
+        }
+        FlxG.state.add(armLSprite);
+        FlxG.state.add(armRSprite);
+        FlxG.state.add(hipsSprite);
+        FlxG.state.add(legLSprite);
+        FlxG.state.add(legRSprite);
+        FlxG.state.add(footLSprite);
+        FlxG.state.add(footRSprite);
+        FlxG.state.add(chestSprite);
+        FlxG.state.add(headSprite);
 	}
 	
 	public function new()

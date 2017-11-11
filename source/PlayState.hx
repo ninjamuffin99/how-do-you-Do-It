@@ -2,12 +2,15 @@ package;
 
 import box2D.collision.B2AABB;
 import box2D.collision.shapes.B2PolygonShape;
+import box2D.collision.shapes.B2Shape;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2Body;
 import box2D.dynamics.B2BodyDef;
 import box2D.dynamics.B2DebugDraw;
+import box2D.dynamics.B2Fixture;
 import box2D.dynamics.B2World;
 import box2D.dynamics.joints.B2MouseJoint;
+import box2D.dynamics.joints.B2MouseJointDef;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -130,7 +133,143 @@ class PlayState extends TimedState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+        
+        if (timeFrame % 100 == 0 && !started)
+        {
+            endTime++;
+        }
+        
+        if (dollController.update(endTime - timeSec))
+        {
+            started = true;
+        }
+        
+        if (started)
+        {
+            thinking.paused = false;
+            FlxG.state.remove(smoke);
+            FlxG.state.remove(howText1);
+            FlxG.state.remove(howText2);
+        }
+        
+        UpdateMouseWorld();
+        MouseDrag();
+        
+        m_world.step(1.0 / 30.0, 10, 10);
+        //m_world.DrawDebugData();
+        
+        dollL.update();
+        dollR.update();
+        dollLGrabber.update();
+        dollRGrabber.update();
+        
+        lArm.update();
+        rArm.update();
+        
+        face.update();
+        
+        /*if(thinking.pos_x > bubble_width){
+        thinking_counter
+        thinking_two = new ScrollingText();
+        add(thinking_two);
+        }*/
+        
+        if (this.timeFrame == 20 * 100)
+        {
+            FlxG.sound.play(AssetPaths.carleave__mp3);
+        }
+        else if (this.timeFrame == 22 * 100)
+        {
+            FlxG.sound.play(AssetPaths.garageopen__mp3);
+        }
+        else if (this.timeFrame == 25 * 100)
+        {
+            FlxG.sound.play(AssetPaths.cardoor__mp3);
+        }
+        else if (this.timeFrame == 29 * 100)
+        {
+            FlxG.sound.play(AssetPaths.dooropen__mp3);
+        }
 	}
+	
+	
+	public function UpdateMouseWorld() : Void
+    {
+        mouseXWorldPhys = (FlxG.mouse.screenX) / m_physScale;
+        mouseYWorldPhys = (FlxG.mouse.screenY) / m_physScale;
+        mouseXWorld = (FlxG.mouse.screenX);
+        mouseYWorld = (FlxG.mouse.screenY);
+    }
+	
+	public function MouseDrag() : Void
+    // mouse press
+    {
+        
+        if (FlxG.mouse.pressed && m_mouseJoint == null)
+        {
+            var body:B2Body = GetBodyAtMouse();
+            
+            if (body != null)
+            {
+                var md:B2MouseJointDef = new B2MouseJointDef();
+                md.bodyA = m_world.getGroundBody();
+                md.bodyB = body;
+                md.target.set(mouseXWorldPhys, mouseYWorldPhys);
+                md.collideConnected = true;
+                md.maxForce = 300.0 * body.getMass();
+                //m_mouseJoint = try cast(m_world.CreateJoint(md), b2MouseJoint) catch(e:Dynamic) null;
+                body.setAwake(true);
+            }
+        }
+        
+        // mouse release
+        if (!FlxG.mouse.pressed)
+        {
+            if (m_mouseJoint != null)
+            {
+                m_world.destroyJoint(m_mouseJoint);
+                m_mouseJoint = null;
+            }
+        }
+        
+        // mouse move
+        if (m_mouseJoint != null)
+        {
+            var p2 : B2Vec2 = new B2Vec2(mouseXWorldPhys, mouseYWorldPhys);
+            m_mouseJoint.setTarget(p2);
+        }
+    }
+	
+	private var mousePVec : B2Vec2 = new B2Vec2();
+    public function GetBodyAtMouse(includeStatic:Bool = false):B2Body
+    // Make a small box.
+    {
+        
+        mousePVec.set(mouseXWorldPhys, mouseYWorldPhys);
+        var aabb : B2AABB = new B2AABB();
+        aabb.lowerBound.set(mouseXWorldPhys - 0.001, mouseYWorldPhys - 0.001);
+        aabb.upperBound.set(mouseXWorldPhys + 0.001, mouseYWorldPhys + 0.001);
+        var body:B2Body = null;
+        var fixture:B2Fixture;
+        
+        // Query the world for overlapping shapes.
+        function GetBodyCallback(fixture : B2Fixture) : Bool
+        {
+            var shape:B2Shape = fixture.getShape();
+            if (fixture.getBody().getType() != B2Body.b2_staticBody || includeStatic)
+            {
+                var inside : Bool = shape.testPoint(fixture.getBody().getTransform(), mousePVec);
+                if (inside)
+                {
+                    body = fixture.getBody();
+                    return false;
+                }
+            }
+            return true;
+        };
+        m_world.queryAABB(GetBodyCallback, aabb);
+        return body;
+    }
 	
 	private function setupWorld():Void
 	{
@@ -171,4 +310,5 @@ class PlayState extends TimedState
         // Bottom
 		wallBd.position.set(640 / m_physScale / 2, (480 + 95) / m_physScale);
 	}
+	
 }
