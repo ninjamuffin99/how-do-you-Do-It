@@ -46,7 +46,7 @@ class Arm
 		}
 		FlxG.state.add(hand);
 		
-		fingers = FlxSprite(x, 120);
+		fingers = new FlxSprite(x, 120);
 		if (rt)
 			fingers.loadGraphic(AssetPaths.girl_fingersL__png, false, 88, 89);
 		else

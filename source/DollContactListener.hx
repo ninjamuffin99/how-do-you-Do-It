@@ -22,8 +22,9 @@ class DollContactListener extends B2ContactListener
         super();
         this.face = face;
     }
+	
     
-    override public function BeginContact(contact : B2Contact) : Void
+    override public function beginContact(contact:B2Contact):Void
     {
         var bodyA : B2Fixture = contact.getFixtureA();
         var bodyB : B2Fixture = contact.getFixtureB();
@@ -209,7 +210,7 @@ class DollContactListener extends B2ContactListener
         }
     }
     
-    override public function EndContact(contact:B2Contact):Void
+    override public function endContact(contact:B2Contact):Void
     {
         var bodyA : B2Fixture = contact.getFixtureA();
         var bodyB : B2Fixture = contact.getFixtureB();

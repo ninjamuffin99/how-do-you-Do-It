@@ -99,8 +99,7 @@ class PlayState extends TimedState
         dollController = new DollController(dollRGrabber, dollLGrabber, rArm, lArm);
         
         smoke = new FlxSprite(0, 0);
-        smoke.makeGraphic(640, 480);
-        smoke.fill(0x55000000);
+        smoke.makeGraphic(640, 480, 0x55000000);
         add(smoke);
         
         howText1 = new FlxText(FlxG.width - 200, FlxG.height / 2, FlxG.width, "Use WASD to move your arms.");
@@ -112,16 +111,16 @@ class PlayState extends TimedState
         add(howText1);
         add(howText2);
         
-        if (FlxG.music == null)
+        if (FlxG.sound.music == null)
         {
-            FlxG.playMusic(SndBGM, ggj.VOLUME);
+            FlxG.sound.playMusic(AssetPaths.bgm__mp3);
         }
         else
         {
-            FlxG.music.resume();
-            if (!FlxG.music.active)
+            FlxG.sound.music.resume();
+            if (!FlxG.sound.music.active)
             {
-                FlxG.playMusic(SndBGM, ggj.VOLUME);
+                FlxG.sound.playMusic(AssetPaths.bgm__mp3);
             }
         }
 		
