@@ -383,7 +383,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "74",
+			build: "76",
 			company: "ninjaMuffin",
 			file: "HDYDI",
 			fps: 60,
