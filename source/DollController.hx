@@ -65,8 +65,8 @@ class DollController
         }
         //t.text = this.isClose.toString();
         
-        var target1:B2Vec2 = doll1.m_mouseJoint.getAngle().Copy();
-        var target2:B2Vec2 = doll2.m_mouseJoint.getTarget().Copy();
+        var target1:B2Vec2 = doll1.m_mouseJoint.getAnchorA();
+        var target2:B2Vec2 = doll2.m_mouseJoint.getAnchorA();
         var angle1:Float = doll1.doll.midriff.getAngle();
         var angle2:Float = doll2.doll.midriff.getAngle();
         var left:Bool = false;
